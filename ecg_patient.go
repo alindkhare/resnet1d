@@ -20,8 +20,8 @@ func main() {
 	ch1 := make(chan string)
 	for i := 0; i <= 100; i++ {
 		// wait for 8 milliseconds to simulate the patient
-	        time.Sleep(8 * time.Millisecond)
-		go MakeRequest("http://127.0.0.1:8000/RayServeProfile/ECG", ch1)
+		time.Sleep(8 * time.Millisecond)
+		go MakeRequest("http://127.0.0.1:5555/?data=0", ch1)
 	}
 	for i := 0; i <= 100; i++ {
 		fmt.Println(<-ch1)
@@ -31,7 +31,7 @@ func main() {
 		// wait for 8 milliseconds to simulate the patient
 		// incoming data
 		time.Sleep(8 * time.Millisecond)
-		go MakeRequest("http://127.0.0.1:8000/RayServeProfile/ECG", ch)
+		go MakeRequest("http://127.0.0.1:5555/?data=0", ch)
 	}
 	for i := 0; i <= 3800; i++ {
 		fmt.Println(<-ch)
