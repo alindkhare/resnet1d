@@ -33,7 +33,7 @@ class PytorchPredictorECG:
             data = data.cuda()
         # do the prediction
         result = self.model(data)
-        return result.data.cpu().numpy().argmax()
+        return result.data.cpu().numpy().argmax().item()
 
 
 # ECG
