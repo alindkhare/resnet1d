@@ -54,7 +54,7 @@ model = ResNet1D(in_channels=n_channel,
                  verbose=False)
 print(type(model))
 
-cuda = True
+cuda = False
 if cuda:
     hw = 'gpu'
 else:
@@ -75,7 +75,7 @@ serve.init(blocking=True)
 serve.create_endpoint("ECG")
 
 # create backend
-b_config = BackendConfig(num_replicas=1, num_gpus=1)
+b_config = BackendConfig(num_replicas=1)
 serve.create_backend(PytorchPredictorECG, "PredictECG",
                      model, cuda, backend_config=b_config)
 
