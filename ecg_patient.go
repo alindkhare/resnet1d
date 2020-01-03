@@ -17,15 +17,15 @@ func MakeRequest(url string, ch chan<- string) {
 func main() {
 	start := time.Now()
 	// ch := make(chan string)
-	ch1 := make(chan string)
-	for i := 0; i <= 100; i++ {
-		// wait for 8 milliseconds to simulate the patient
-		time.Sleep(8 * time.Millisecond)
-		go MakeRequest("http://127.0.0.1:5000/?data=0", ch1)
-	}
-	for i := 0; i <= 100; i++ {
-		fmt.Println(<-ch1)
-	}
+	// ch1 := make(chan string)
+	// for i := 0; i <= 100; i++ {
+	// 	// wait for 8 milliseconds to simulate the patient
+	// 	time.Sleep(8 * time.Millisecond)
+	// 	go MakeRequest("http://127.0.0.1:5000/?data=0", ch1)
+	// }
+	// for i := 0; i <= 100; i++ {
+	// 	fmt.Println(<-ch1)
+	// }
 	ch := make(chan string)
 	for i := 0; i <= 3800; i++ {
 		// wait for 8 milliseconds to simulate the patient
