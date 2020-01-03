@@ -84,6 +84,10 @@ http_actor.run.remote()
 time.sleep(2)
 print("Started client!")
 # fire client
-ls_output = subprocess.Popen(["go", "run", "ecg_patient.go"])
-ls_output.communicate()
+procs = []
+for _ in range(2):
+    ls_output = subprocess.Popen(["go", "run", "ecg_patient.go"])
+    procs.append(ls_output)
+for p in procs:
+    p.wait()
 print(serve.stat())
