@@ -38,10 +38,10 @@ class PytorchPredictorECG:
 
 # ECG
 n_channel = 1
-base_filters = 32
+base_filters = 16
 kernel_size = 16
 n_classes = 2
-n_block = 32
+n_block = 16
 model = ResNet1D(in_channels=n_channel,
                  base_filters=base_filters,
                  kernel_size=kernel_size,
