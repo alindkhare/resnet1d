@@ -117,7 +117,7 @@ class HTTPProxy:
             request_sent_time = time.time()
             query_string = scope["query_string"].decode("ascii")
             query_kwargs = parse_qs(query_string)
-            data = float(query_kwargs.pop("data", 0))
+            data = float(query_kwargs.pop("data", [0.])[0])
             length, curr_list = await self.append(data)
             if length == self.num_queries:
                 input_tensor = torch.cat(curr_list, dim=1)
@@ -150,7 +150,7 @@ class HTTPProxy:
 @ray.remote
 class HTTPActor:
     def __init__(self, handle, num_queries):
-        self.app = HTTPProxy(handle[0], num_queries)
+        self.app = HTTPProxy(handle, num_queries)
 
     def run(self, host="0.0.0.0", port=5000):
         uvicorn.run(
