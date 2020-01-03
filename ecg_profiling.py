@@ -80,7 +80,7 @@ num_queries = 3750
 http_actor = HTTPActor.remote(handle, num_queries)
 http_actor.run.remote()
 # wait for server to start
-time.sleep(1)
+time.sleep(2)
 
 # fire client
 ls_output = subprocess.Popen(["go", "run", "ecg_patient.go"])
