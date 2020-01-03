@@ -69,9 +69,9 @@ serve.init(blocking=True)
 serve.create_endpoint("ECG")
 
 # create backend
-b_config = BackendConfig(num_replicas=1)
+b_config = BackendConfig(num_replicas=1, num_gpus=1)
 serve.create_backend(PytorchPredictorECG, "PredictECG",
-                     model, backend_config=b_config)
+                     model, True, backend_config=b_config)
 
 # link service and backend
 serve.link("ECG", "PredictECG")
