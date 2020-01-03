@@ -54,14 +54,14 @@ model = ResNet1D(in_channels=n_channel,
                  verbose=False)
 print(type(model))
 
-cuda = True
+cuda = False
 if cuda:
     hw = 'gpu'
 else:
     hw = 'cpu'
 # initiate serve
 p = Path("Resnet1d_base_filters={},kernel_size={},n_block={}"
-         "_{}_7600_queries.jsonl.jsonl".format(base_filters, kernel_size, n_block, hw))
+         "_{}_7600_queries.jsonl".format(base_filters, kernel_size, n_block, hw))
 p.touch()
 os.environ["HEALTH_PROFILE_PATH"] = str(p.resolve())
 serve.init(blocking=True)
@@ -75,7 +75,7 @@ serve.init(blocking=True)
 serve.create_endpoint("ECG")
 
 # create backend
-b_config = BackendConfig(num_replicas=1, num_gpus=1)
+b_config = BackendConfig(num_replicas=1)
 serve.create_backend(PytorchPredictorECG, "PredictECG",
                      model, cuda, backend_config=b_config)
 
