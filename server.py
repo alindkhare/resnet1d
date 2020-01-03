@@ -14,6 +14,8 @@ import os
 from ray import cloudpickle as pickle
 import time
 import torch
+import copy
+from ray.experimental.serve.utils import logger
 
 
 class JSONResponse:
@@ -93,7 +95,7 @@ class HTTPProxy:
         async with self.lock:
             self.required_data.append(torch.tensor([[data]]))
             length = len(self.required_data)
-            data = self.required_data
+            data = list(self.required_data)
         return length, data
 
     def get_tensor(self):
@@ -127,6 +129,9 @@ class HTTPProxy:
                         self.required_data = self.required_data[length:]
                     else:
                         self.required_data = []
+                logger.info(
+                    "Tensor Size : {}".format(input_tensor.size())
+                )
                 result = await self.handle.remote(data=input_tensor)
             else:
                 result = "Value stored!"
