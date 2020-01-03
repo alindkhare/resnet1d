@@ -150,7 +150,7 @@ class HTTPProxy:
 @ray.remote
 class HTTPActor:
     def __init__(self, handle, num_queries):
-        self.app = HTTPProxy()
+        self.app = HTTPProxy(handle[0], num_queries)
 
     def run(self, host="0.0.0.0", port=5000):
         uvicorn.run(
