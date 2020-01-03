@@ -39,9 +39,9 @@ class PytorchPredictorECG:
 # ECG
 n_channel = 1
 base_filters = 32
-kernel_size = 32
+kernel_size = 16
 n_classes = 2
-n_block = 16
+n_block = 32
 model = ResNet1D(in_channels=n_channel,
                  base_filters=base_filters,
                  kernel_size=kernel_size,
@@ -54,7 +54,7 @@ model = ResNet1D(in_channels=n_channel,
                  verbose=False)
 print(type(model))
 
-cuda = False
+cuda = True
 if cuda:
     hw = 'gpu'
 else:
@@ -75,7 +75,7 @@ serve.init(blocking=True)
 serve.create_endpoint("ECG")
 
 # create backend
-b_config = BackendConfig(num_replicas=1)
+b_config = BackendConfig(num_replicas=1, num_gpus=1)
 serve.create_backend(PytorchPredictorECG, "PredictECG",
                      model, cuda, backend_config=b_config)
 
