@@ -90,11 +90,11 @@ class HTTPProxy:
         return b"".join(body_buffer)
 
     async def append(self, data):
-        await self.lock.acquire()
-        self.required_data.append(torch.tensor([[data]]))
-        length = len(self.required_data)
-        await self.lock.release()
-        return length, self.required_data
+        async with self.lock:
+            self.required_data.append(torch.tensor([[data]]))
+            length = len(self.required_data)
+            data = self.required_data
+        return length, data
 
     def get_tensor(self):
 
@@ -122,12 +122,11 @@ class HTTPProxy:
             if length == self.num_queries:
                 input_tensor = torch.cat(curr_list, dim=1)
                 input_tensor = torch.stack([input_tensor])
-                await self.lock.acquire()
-                if len(self.required_data) > length:
-                    self.required_data = self.required_data[length:]
-                else:
-                    self.required_data = []
-                await self.lock.release()
+                async with lock:
+                    if len(self.required_data) > length:
+                        self.required_data = self.required_data[length:]
+                    else:
+                        self.required_data = []
                 result = await self.handle.remote(data=input_tensor)
             else:
                 result = "Value stored!"
