@@ -124,7 +124,7 @@ class HTTPProxy:
             if length == self.num_queries:
                 input_tensor = torch.cat(curr_list, dim=1)
                 input_tensor = torch.stack([input_tensor])
-                async with lock:
+                async with self.lock:
                     if len(self.required_data) > length:
                         self.required_data = self.required_data[length:]
                     else:
