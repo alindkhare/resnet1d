@@ -76,8 +76,9 @@ serve.create_backend(PytorchPredictorECG, "PredictECG",
 # link service and backend
 serve.link("ECG", "PredictECG")
 handle = serve.get_handle("ECG")
+print(handle)
 num_queries = 3750
-http_actor = HTTPActor.remote(handle, num_queries)
+http_actor = HTTPActor.remote([handle], num_queries)
 http_actor.run.remote()
 # wait for server to start
 time.sleep(2)
